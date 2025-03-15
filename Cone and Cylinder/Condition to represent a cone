@@ -1,0 +1,38 @@
+import sympy as sp
+from sympy.plotting import plot_implicit
+
+def is_cone(A, B, C, D, E, F, G, H, I, J):
+    # Construct the matrix of the quadratic form
+    Q = sp.Matrix([
+        [A, D/2, E/2, G/2],
+        [D/2, B, F/2, H/2],
+        [E/2, F/2, C, I/2],
+        [G/2, H/2, I/2, J]
+    ])
+    
+    # Calculate the determinant of the 3x3 submatrix
+    submatrix = Q[:3, :3]
+    det_submatrix = submatrix.det()
+    
+    # Calculate the determinant of the full 4x4 matrix
+    det_full = Q.det()
+    
+    # Condition for the equation to represent a cone
+    if det_submatrix != 0 and det_full == 0:
+        return True
+    else:
+        return False
+
+def plot_cone(A, B, C, D, E, F, G, H, I, J):
+    x, y, z = sp.symbols('x y z')
+    equation = A*x**2 + B*y**2 + C*z**2 + D*x*y + E*x*z + F*y*z + G*x + H*y + I*z + J
+    plot_implicit(sp.Eq(equation, 0), (x, -10, 10), (y, -10, 10), (z, -10, 10))
+
+# Example coefficients for the general equation
+A, B, C, D, E, F, G, H, I, J = 1, 1, 1, 0, 0, 0, 0, 0, 0, 0
+
+if is_cone(A, B, C, D, E, F, G, H, I, J):
+    print("The equation represents a cone.")
+    plot_cone(A, B, C, D, E, F, G, H, I, J)
+else:
+    print("The equation does not represent a cone.")

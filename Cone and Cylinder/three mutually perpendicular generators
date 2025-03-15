@@ -1,0 +1,42 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# Function to check the condition for three mutually perpendicular generators
+def check_perpendicular_generators(a, b, c):
+    return a**2 + b**2 + c**2 == 0
+
+# Parameters for the cone
+a, b, c = 1, 1, -1  # Example values, adjust as needed
+
+# Check the condition
+if check_perpendicular_generators(a, b, c):
+    print("The cone has three mutually perpendicular generators.")
+else:
+    print("The cone does not have three mutually perpendicular generators.")
+
+# Plotting the cone
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+# Create a mesh grid for the cone
+u = np.linspace(0, 2 * np.pi, 100)
+v = np.linspace(0, np.pi, 100)
+x = a * np.outer(np.cos(u), np.sin(v))
+y = b * np.outer(np.sin(u), np.sin(v))
+z = c * np.outer(np.ones(np.size(u)), np.cos(v))
+
+# Plot the surface
+ax.plot_surface(x, y, z, color='b', alpha=0.6)
+
+# Plot the generators
+ax.quiver(0, 0, 0, a, 0, 0, color='r')
+ax.quiver(0, 0, 0, 0, b, 0, color='g')
+ax.quiver(0, 0, 0, 0, 0, c, color='b')
+
+# Set labels
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+
+plt.show()
